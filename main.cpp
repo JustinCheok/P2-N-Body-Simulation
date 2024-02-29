@@ -36,7 +36,7 @@ background.setScale(scaleX, scaleY);
 // Sound
 sf::SoundBuffer buffer;
 if(!buffer.loadFromFile("nbody/2001.wav"))
-return -1;
+  return -1;
 // SOund play
 sf::Sound sound;
 sound.setBuffer(buffer);
@@ -45,3 +45,40 @@ float cT;
 float dT;
 float mT;
 if(argc == 3) {
+  sscanf(argv[1], "%f", &mT);
+  sscanf(argv[2], "%f", &dT);
+}
+bool printed = false;
+// Window Open
+while(window.isOpen()) {
+  sf::Event event{}
+  while(window.pollEvent(event)) {
+  switch(event.type) {
+case sf::Event::Closed:window.close();
+  break;
+// Key Press Q
+case sf::Event::KeyPressed:
+  if(event.key.code == sf::Keyboard::Q) {
+window.close();
+cout << "Quit" << endl;
+  }
+break;
+default:
+break;
+  }
+  }
+window.clear();
+if(cT < mT) {
+universe.leapFrog(&cT, dT);
+}
+else if(!printed) {
+universe.printUniverse();
+printed = true;
+}
+// Out
+window.draw(background);
+window.draw(universe);
+window.display();
+}
+return 0;
+}
